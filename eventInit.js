@@ -2,7 +2,7 @@
 
 const mongoose = require('mongoose');
 
-let MongoDB = 'mongodb://127.0.0.1:27017/UsersDB'
+let MongoDB = 'mongodb+srv://Seokjinnie:120304249203@cluster0.gaml5pm.mongodb.net/?retryWrites=true&w=majority'
 let options = { useNewUrlParser: true, useUnifiedTopology: true };
 
 mongoose.connect(MongoDB, options);
