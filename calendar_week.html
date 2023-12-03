@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calendario</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <style>
+
+    body {
+      font-family: "Roboto-Bold", Helvetica, Arial, sans-serif;
+      display: flex;
+      flex-direction: row;
+    }
+
+    #left-panel {
+      flex: 0.5;
+      padding: 20px;
+      border-right: 1px solid #ccc;
+      display: flex;
+      flex-direction: column;
+    }
+
+    #left-panel button {
+      color: #000000;
+      border: none;
+      border-radius: 15px;
+      padding: 8px 12px;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    #left-panel button:hover {
+      background-color: #AFB3FF;
+    }
+
+    #right-panel {
+      flex: 2;
+      padding: 20px;
+    }
+
+    #right-panel button {
+      color: #000000;
+      border: none;
+      border-radius: 15px;
+      padding: 8px 12px;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    #left-panel select {
+      background-color: #fff;
+      color: #000;
+      border: 2px solid #ccc;
+      border-radius: 3px;
+      padding: 10px 15px;
+      font-size: 12px;
+      cursor: pointer;
+      width:100%;
+    }
+
+    #right-panel button:hover {
+      background-color: #AFB3FF;
+      color: #fff;
+    }
+
+    #right-panel select:hover {
+      border: 2px solid #656ed3;
+      color: #656ed3;
+    }
+
+    #month-navigation {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    #month-navigation button {
+      align-items: flex-end;
+      margin-left: 10px;
+    }
+
+    #calendar {
+      border: 1px solid #ccc;
+      padding: 20px;
+    }
+
+    #events {
+      margin-top: 20px;
+    }
+
+    #profile-button {
+      order: 2;
+      float: right;
+      display: flex ;
+    }
+
+    #add-event-button {
+      float:right;
+      margin-top: 20px;
+    }
+
+    #current-month-year {
+      font-size: 24px; 
+      font-weight: bold; 
+      font-family: "Roboto-Bold", Helvetica, Arial, sans-serif;
+    }
+
+    #left-panel span{
+      font-size: 24px; 
+      font-weight: bold; 
+      font-family: "Roboto-Bold", Helvetica, Arial, sans-serif;
+    }
+
+    #profile-button i {
+      color: #656ed3; 
+      font-size: 35px; 
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      border: 1px solid #DADCE0;
+      padding: 1px;
+      text-align: center;
+      vertical-align: top;
+    }
+
+    th {
+      font-family: "Roboto-Bold", Helvetica, Arial, sans-serif;
+      background-color: #fff;
+    }
+
+    td {
+      background-color: #ffffff;
+      font-size: 10px;
+      padding-top: 50px;
+    }
+
+    #mini-calendar {
+      border: 1px solid #fff;
+      padding: 20px;
+    }
+
+    
+    #mini-calendar table {
+      width: 100%;
+    }
+
+    #mini-calendar th, #mini-calendar td {
+      width: 14.28%; 
+      border: 1px solid #DADCE0;
+      padding: 15px;
+      text-align: center;
+    }
+
+    .event-1 {
+      color: #FF5733; 
+    }
+
+    .event-2 {
+      color: purple; 
+    }
+
+    .event-3 {
+      color: #5733FF; 
+    }
+
+    .event-4 {
+      color: red; 
+    }
+
+    #videollamada {
+      display: block;
+      font-size: 12px;
+      font-weight: bold;
+      background-color: #FF5733; 
+      color: white; 
+      text-align: center;
+      border-radius: 7px;
+    }
+
+    #deporte{
+      display: block;
+      font-size: 12px;
+      font-weight: bold;
+      background-color: purple; 
+      color: white; 
+      text-align: center;
+      border-radius: 7px;
+    }
+
+    #tarea{
+      display: block;
+      font-size: 12px;
+      font-weight: bold;
+      background-color: #5733FF; 
+      color: white; 
+      text-align: center;
+      border-radius: 7px;
+    }
+
+    
+
+    .dropdown {
+      position: relative;
+      display: inline-block;
+      width: 100%;
+    }
+
+    .dropbtn {
+      color: #656ed3;
+      border: none;
+      cursor: pointer;
+      width:100%;
+      margin-top: 20px;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #fff;
+      min-width: 160px;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      z-index: 1;
+      margin-top: 10px;
+      width: 100%;
+    }
+
+    .dropdown-content a {
+      display: block;
+      padding: 10px;
+      text-decoration: none;
+      font-size: 15px;
+      color: #000;
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    .dropdown-content a:hover {
+      background-color: #AFB3FF;
+      color: #fff;
+      width: 100%;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+      width: 100%;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      overflow: auto;
+    }
+
+    .modal-content {
+      background-color: #fff;
+      width: 30%;
+      margin: 10% auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 15px;
+      align-items: center;
+      
+    }
+
+    label {
+      margin-bottom: 10px;
+      font-weight: bold;
+      font-family: "Roboto-Bold", Helvetica, Arial, sans-serif;
+    }
+
+    input, textarea {
+      margin-bottom: 20px;
+      width: 100%;
+      margin: 10px 0;
+      border: 1px solid #848484;
+      border-radius: 25px;
+      height: 2em;
+    }
+
+    h2{
+      color: #656ed3
+    }
+
+    #event-date, #event-time {
+      margin-bottom: 20px;
+      width: 30%;
+      margin: 10px 0;
+      border: 1px solid #848484;
+      border-radius: 25px;
+    }
+
+    #event-category {
+      margin-bottom: 20px;
+      width: 35%;
+      margin: 10px 0;
+      border: 1px solid #848484;
+      border-radius: 25px;
+    }
+
+    input[type="submit"] {
+      margin-top: 20px;
+      background-color: #ffffff;
+      color: #656ed3;
+      border: 1px solid #656ed3;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+    }
+
+    input[type="submit"]:hover {
+      background-color: #656ed3;
+      color: white;
+      border: 1px solid #656ed3;
+    }
+
+    form {
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-gap: 20px; 
+    }
+
+    .close {
+      float: right;
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    
+
+    
+
+  </style>
+</head>
+<body>
+  <div id="left-panel">
+    <div id="month">
+      <span id="current-month-left">Noviembre 2023</span>
+      <button id="prev-month-left"><</button>
+      <button id="next-month-left">></button>
+    </div>
+    <div id="mini-calendar">
+      <table>
+        <thead>
+          <tr>
+            <th>D</th>
+            <th>L</th>
+            <th>M</th>
+            <th>X</th>
+            <th>J</th>
+            <th>V</th>
+            <th>S</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>1</td>
+            <td>2</td>
+            <td>3</td>
+            <td>4</td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td>6</td>
+            <td>7</td>
+            <td>8</td>
+            <td>8</td>
+            <td>10</td>
+            <td>11</td>
+          </tr>
+          <tr>
+            <td>12</td>
+            <td>13</td>
+            <td>14</td>
+            <td>15</td>
+            <td>16</td>
+            <td>17</td>
+            <td>18</td>
+          </tr>
+          <tr>
+            <td>19</td>
+            <td>20</td>
+            <td>21</td>
+            <td>22</td>
+            <td>23</td>
+            <td>24</td>
+            <td>25</td>
+          </tr>
+          <tr>
+            <td>26</td>
+            <td>27</td>
+            <td>28</td>
+            <td>29</td>
+            <td>30</td>
+            <td></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <select id="month-select" onchange="redirectToPage()">
+      <option value="Semana">Semana</option>
+      <option value="Mes">Mes</option>
+    </select>
+    <button id="add-event-button" onclick="openModal()">Añadir Evento</button>
+    <div id="profile-button" class="dropdown">
+      <button class="dropbtn">Perfil</button>
+      <div class="dropdown-content">
+        <a href="perfil.html">Mi Perfil</a>
+        <a href="login.html">Cerrar Sesion</a>
+      </div>
+    </div>
+  </div>
+  <div id="right-panel">
+    <div id="navbar">
+      <div id="current-month-year">
+        <span id="week-dates">20 - 26 Noviembre 2023</span>
+        <button id="prev-week" onclick="changeWeek(-1)"><</button>
+        <button id="next-week" onclick="changeWeek(1)">></button>
+        
+        
+        
+      </div>
+    </div>
+    <div id="calendar">
+      <table>
+        <thead>
+          <tr>
+            <th>Hora</th>
+            <th>Domingo</th>
+            <th>Lunes</th>
+            <th>Martes</th>
+            <th>Miercoles</th>
+            <th>Jueves</th>
+            <th>Viernes</th>
+            <th>Sabado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>12:00 AM</td>
+            <td data-hour="12:00 AM" data-day="domingo" onclick="openModalWithHour('12:00:00')"></td>
+            <td data-hour="12:00 AM" data-day="lunes" onclick="openModalWithHour('12:00 AM')"></td>
+            <td data-hour="12:00 AM" data-day="martes" onclick="openModalWithHour('12:00 AM')"></td>
+            <td data-hour="12:00 AM" data-day="miercoles" onclick="openModalWithHour('12:00 AM')"></td>
+            <td data-hour="12:00 AM" data-day="jueves" onclick="openModalWithHour('12:00 AM')"></td>
+            <td data-hour="12:00 AM" data-day="viernes" onclick="openModalWithHour('12:00 AM')"></td>
+            <td data-hour="12:00 AM" data-day="sabado" onclick="openModalWithHour('12:00 AM')"></td>
+          </tr>
+          <tr>
+            <td>01:00 AM</td>
+            <td data-hour="01:00 AM" data-day="domingo" onclick="openModalWithHour('01:00 AM')"></td>
+            <td data-hour="01:00 AM" data-day="lunes" onclick="openModalWithHour('01:00 AM')"></td>
+            <td data-hour="01:00 AM" data-day="martes" onclick="openModalWithHour('01:00 AM')"></td>
+            <td data-hour="01:00 AM" data-day="miercoles" onclick="openModalWithHour('01:00 AM')"></td>
+            <td data-hour="01:00 AM" data-day="jueves" onclick="openModalWithHour('01:00 AM')"></td>
+            <td data-hour="01:00 AM" data-day="viernes" onclick="openModalWithHour('01:00 AM')"></td>
+            <td data-hour="01:00 AM" data-day="sabado" onclick="openModalWithHour('01:00 AM')"></td>
+          </tr>
+          <tr>
+            <td>02:00 AM</td>
+            <td data-hour="01:00 AM" data-day="domingo" onclick="openModalWithHour('02:00 AM')"></td>
+            <td data-hour="02:00 AM" data-day="lunes" onclick="openModalWithHour('02:00 AM')"></td>
+            <td data-hour="02:00 AM" data-day="martes" onclick="openModalWithHour('02:00 AM')"></td>
+            <td data-hour="02:00 AM" data-day="miercoles" onclick="openModalWithHour('02:00 AM')"></td>
+            <td data-hour="02:00 AM" data-day="jueves" onclick="openModalWithHour('02:00 AM')"></td>
+            <td data-hour="02:00 AM" data-day="viernes" onclick="openModalWithHour('02:00 AM')"></td>
+            <td data-hour="02:00 AM" data-day="sabado" onclick="openModalWithHour('02:00 AM')"></td>
+          </tr>
+          <tr>
+            <td>03:00 AM</td>
+            <td data-hour="03:00 AM" data-day="domingo" onclick="openModalWithHour('03:00 AM')"></td>
+            <td data-hour="03:00 AM" data-day="lunes" onclick="openModalWithHour('03:00 AM')"></td>
+            <td data-hour="03:00 AM" data-day="martes" onclick="openModalWithHour('03:00 AM')"></td>
+            <td data-hour="03:00 AM" data-day="miercoles" onclick="openModalWithHour('03:00 AM')"></td>
+            <td data-hour="03:00 AM" data-day="jueves" onclick="openModalWithHour('03:00 AM')"></td>
+            <td data-hour="03:00 AM" data-day="viernes" onclick="openModalWithHour('03:00 AM')"></td>
+            <td data-hour="03:00 AM" data-day="sabado" onclick="openModalWithHour('03:00 AM')"></td>
+          </tr>
+          <tr>
+            <td>04:00 AM</td>
+            <td data-hour="04:00 AM" data-day="domingo" onclick="openModalWithHour('04:00 AM')"></td>
+            <td data-hour="04:00 AM" data-day="lunes" onclick="openModalWithHour('04:00 AM')"></td>
+            <td data-hour="04:00 AM" data-day="martes" onclick="openModalWithHour('04:00 AM')"></td>
+            <td data-hour="04:00 AM" data-day="miercoles" onclick="openModalWithHour('04:00 AM')"></td>
+            <td data-hour="04:00 AM" data-day="jueves" onclick="openModalWithHour('04:00 AM')"></td>
+            <td data-hour="04:00 AM" data-day="viernes" onclick="openModalWithHour('04:00 AM')"></td>
+            <td data-hour="04:00 AM" data-day="sabado" onclick="openModalWithHour('04:00 AM')"></td>
+          </tr>
+          <tr>
+            <td>05:00 AM</td>
+            <td data-hour="05:00 AM" data-day="domingo" onclick="openModalWithHour('05:00 AM')"></td>
+            <td data-hour="05:00 AM" data-day="lunes" onclick="openModalWithHour('05:00 AM')"></td>
+            <td data-hour="05:00 AM" data-day="martes" onclick="openModalWithHour('05:00 AM')"></td>
+            <td data-hour="05:00 AM" data-day="miercoles" onclick="openModalWithHour('05:00 AM')"></td>
+            <td data-hour="05:00 AM" data-day="jueves" onclick="openModalWithHour('05:00 AM')"></td>
+            <td data-hour="05:00 AM" data-day="viernes" onclick="openModalWithHour('05:00 AM')"></td>
+            <td data-hour="05:00 AM" data-day="sabado" onclick="openModalWithHour('05:00 AM')"></td>
+          </tr>
+          <tr>
+            <td>06:00 AM</td>
+            <td data-hour="06:00 AM" data-day="domingo" onclick="openModalWithHour('06:00 AM')"></td>
+            <td data-hour="06:00 AM" data-day="lunes" onclick="openModalWithHour('06:00 AM')"></td>
+            <td data-hour="06:00 AM" data-day="martes" onclick="openModalWithHour('06:00 AM')"></td>
+            <td data-hour="06:00 AM" data-day="miercoles" onclick="openModalWithHour('06:00 AM')"></td>
+            <td data-hour="06:00 AM" data-day="jueves" onclick="openModalWithHour('06:00 AM')"></td>
+            <td data-hour="06:00 AM" data-day="viernes" onclick="openModalWithHour('06:00 AM')"></td>
+            <td data-hour="06:00 AM" data-day="sabado" onclick="openModalWithHour('06:00 AM')"></td>
+          </tr>
+          <tr>
+            <td>07:00 AM</td>
+            <td data-hour="07:00 AM" data-day="domingo" onclick="openModalWithHour('07:00 AM')"></td>
+            <td data-hour="07:00 AM" data-day="lunes" onclick="openModalWithHour('07:00 AM')"></td>
+            <td data-hour="07:00 AM" data-day="martes" onclick="openModalWithHour('07:00 AM')"></td>
+            <td data-hour="07:00 AM" data-day="miercoles" onclick="openModalWithHour('07:00 AM')"></td>
+            <td data-hour="07:00 AM" data-day="jueves" onclick="openModalWithHour('07:00 AM')"></td>
+            <td data-hour="07:00 AM" data-day="viernes" onclick="openModalWithHour('07:00 AM')"></td>
+            <td data-hour="07:00 AM" data-day="sabado" onclick="openModalWithHour('07:00 AM')"></td>
+          </tr>
+          <tr>
+            <td>08:00 AM</td>
+            <td data-hour="08:00 AM" data-day="domingo" onclick="openModalWithHour('08:00 AM')"></td>
+            <td data-hour="08:00 AM" data-day="lunes" onclick="openModalWithHour('08:00 AM')"></td>
+            <td data-hour="08:00 AM" data-day="martes" onclick="openModalWithHour('08:00 AM')"></td>
+            <td data-hour="08:00 AM" data-day="miercoles" onclick="openModalWithHour('08:00 AM')"></td>
+            <td data-hour="08:00 AM" data-day="jueves" onclick="openModalWithHour('08:00 AM')"></td>
+            <td data-hour="08:00 AM" data-day="viernes" onclick="openModalWithHour('08:00 AM')"></td>
+            <td data-hour="08:00 AM" data-day="sabado" onclick="openModalWithHour('08:00 AM')"></td>
+          </tr>
+          <tr>
+            <td>09:00 AM</td>
+            <td data-hour="09:00 AM" data-day="domingo" onclick="openModalWithHour('09:00 AM')"></td>
+            <td data-hour="09:00 AM" data-day="lunes"onclick="openModalWithHour('09:00 AM')"></td>
+            <td data-hour="09:00 AM" data-day="martes"onclick="openModalWithHour('09:00 AM')"></td>
+            <td data-hour="09:00 AM" data-day="miercoles"onclick="openModalWithHour('09:00 AM')"></td>
+            <td data-hour="09:00 AM" data-day="jueves"onclick="openModalWithHour('09:00 AM')"></td>
+            <td data-hour="09:00 AM" data-day="viernes"onclick="openModalWithHour('09:00 AM')"></td>
+            <td data-hour="09:00 AM" data-day="sabado"onclick="openModalWithHour('09:00 AM')"></td>
+          </tr>
+          <tr>
+            <td>10:00 AM</td>
+            <td data-hour="10:00 AM" data-day="domingo" onclick="openModalWithHour('10:00 AM')"></td>
+            <td data-hour="10:00 AM" data-day="lunes" onclick="openModalWithHour('10:00 AM')"></td>
+            <td data-hour="10:00 AM" data-day="martes" onclick="openModalWithHour('10:00 AM')"></td>
+            <td data-hour="10:00 AM" data-day="miercoles" onclick="openModalWithHour('10:00 AM')"></td>
+            <td data-hour="10:00 AM" data-day="jueves" onclick="openModalWithHour('10:00 AM')"></td>
+            <td data-hour="10:00 AM" data-day="viernes" onclick="openModalWithHour('10:00 AM')"></td>
+            <td data-hour="10:00 AM" data-day="sabado" onclick="openModalWithHour('10:00 AM')"></td>
+          </tr>
+          <tr>
+            <td>11:00 AM</td>
+            <td data-hour="11:00 AM" data-day="domingo" onclick="openModalWithHour('11:00 AM')"></td>
+            <td data-hour="11:00 AM" data-day="lunes" onclick="openModalWithHour('11:00 AM')"></td>
+            <td data-hour="11:00 AM" data-day="martes" onclick="openModalWithHour('11:00 AM')"></td>
+            <td data-hour="11:00 AM" data-day="miercoles" onclick="openModalWithHour('11:00 AM')"></td>
+            <td data-hour="11:00 AM" data-day="jueves" onclick="openModalWithHour('11:00 AM')"></td>
+            <td data-hour="11:00 AM" data-day="viernes" onclick="openModalWithHour('11:00 AM')"></td>
+            <td data-hour="11:00 AM" data-day="sabado" onclick="openModalWithHour('11:00 AM')"></td>
+          </tr>
+          <tr>
+            <td>12:00 PM</td>
+            <td data-hour="12:00 PM" data-day="domingo" onclick="openModalWithHour('12:00 PM')"></td>
+            <td data-hour="12:00 PM" data-day="lunes" onclick="openModalWithHour('12:00 PM')"></td>
+            <td data-hour="12:00 PM" data-day="martes" onclick="openModalWithHour('12:00 PM')"></td>
+            <td data-hour="12:00 PM" data-day="miercoles" onclick="openModalWithHour('12:00 PM')"></td>
+            <td data-hour="12:00 PM" data-day="jueves" onclick="openModalWithHour('12:00 PM')"></td>
+            <td data-hour="12:00 PM" data-day="viernes" onclick="openModalWithHour('12:00 PM')"></td>
+            <td data-hour="12:00 PM" data-day="sabado" onclick="openModalWithHour('12:00 PM')"></td>
+          </tr>
+          <tr>
+            <td>01:00 PM</td>
+            <td data-hour="01:00 PM" data-day="domingo" onclick="openModalWithHour('01:00 PM')"></td>
+            <td data-hour="01:00 PM" data-day="lunes" onclick="openModalWithHour('01:00 PM')"></td>
+            <td data-hour="01:00 PM" data-day="martes" onclick="openModalWithHour('01:00 PM')"></td>
+            <td data-hour="01:00 PM" data-day="miercoles" onclick="openModalWithHour('01:00 PM')"></td>
+            <td data-hour="01:00 PM" data-day="jueves" onclick="openModalWithHour('01:00 PM')"></td>
+            <td data-hour="01:00 PM" data-day="viernes" onclick="openModalWithHour('01:00 PM')"></td>
+            <td data-hour="01:00 PM" data-day="sabado" onclick="openModalWithHour('01:00 PM')"></td>
+          </tr>
+          <tr>
+            <td>02:00 PM</td>
+            <td data-hour="02:00 PM" data-day="domingo" onclick="openModalWithHour('02:00 PM')"></td>
+            <td data-hour="02:00 PM" data-day="lunes" onclick="openModalWithHour('02:00 PM')"></td>
+            <td data-hour="02:00 PM" data-day="martes" onclick="openModalWithHour('02:00 PM')"></td>
+            <td data-hour="02:00 PM" data-day="miercoles" onclick="openModalWithHour('02:00 PM')"></td>
+            <td data-hour="02:00 PM" data-day="jueves" onclick="openModalWithHour('02:00 PM')"></td>
+            <td data-hour="02:00 PM" data-day="viernes" onclick="openModalWithHour('02:00 PM')"></td>
+            <td data-hour="02:00 PM" data-day="sabado" onclick="openModalWithHour('02:00 PM')"></td>
+          </tr>
+          <tr>
+            <td>03:00 PM</td>
+            <td data-hour="03:00 PM" data-day="domingo" onclick="openModalWithHour('03:00 PM')"></td>
+            <td data-hour="03:00 PM" data-day="lunes" onclick="openModalWithHour('03:00 PM')"></td>
+            <td data-hour="03:00 PM" data-day="martes" onclick="openModalWithHour('03:00 PM')"></td>
+            <td data-hour="03:00 PM" data-day="miercoles" onclick="openModalWithHour('03:00 PM')"></td>
+            <td data-hour="03:00 PM" data-day="jueves" onclick="openModalWithHour('03:00 PM')"></td>
+            <td data-hour="03:00 PM" data-day="viernes" onclick="openModalWithHour('03:00 PM')"></td>
+            <td data-hour="03:00 PM" data-day="sabado" onclick="openModalWithHour('03:00 PM')"></td>
+          </tr>
+          <tr>
+            <td>04:00 PM</td>
+            <td data-hour="04:00 PM" data-day="domingo" onclick="openModalWithHour('04:00 PM')"></td>
+            <td data-hour="04:00 PM" data-day="lunes" onclick="openModalWithHour('04:00 PM')"></td>
+            <td data-hour="04:00 PM" data-day="martes" onclick="openModalWithHour('04:00 PM')"></td>
+            <td data-hour="04:00 PM" data-day="miercoles" onclick="openModalWithHour('04:00 PM')"></td>
+            <td data-hour="04:00 PM" data-day="jueves" onclick="openModalWithHour('04:00 PM')"></td>
+            <td data-hour="04:00 PM" data-day="viernes" onclick="openModalWithHour('04:00 PM')"></td>
+            <td data-hour="04:00 PM" data-day="sabado" onclick="openModalWithHour('04:00 PM')"></td>
+          </tr>
+          <tr>
+            <td>05:00 PM</td>
+            <td data-hour="05:00 PM" data-day="domingo" onclick="openModalWithHour('05:00 PM')"></td>
+            <td data-hour="05:00 PM" data-day="lunes" onclick="openModalWithHour('05:00 PM')"></td>
+            <td data-hour="05:00 PM" data-day="martes" onclick="openModalWithHour('05:00 PM')"></td>
+            <td data-hour="05:00 PM" data-day="miercoles" onclick="openModalWithHour('05:00 PM')"></td>
+            <td data-hour="05:00 PM" data-day="jueves" onclick="openModalWithHour('05:00 PM')"></td>
+            <td data-hour="05:00 PM" data-day="viernes" onclick="openModalWithHour('05:00 PM')"></td>
+            <td data-hour="05:00 PM" data-day="sabado" onclick="openModalWithHour('05:00 PM')"></td>
+          </tr>
+          <tr>
+            <td>06:00 PM</td>
+            <td data-hour="06:00 PM" data-day="domingo" onclick="openModalWithHour('06:00 PM')"></td>
+            <td data-hour="06:00 PM" data-day="lunes" onclick="openModalWithHour('06:00 PM')"></td>
+            <td data-hour="06:00 PM" data-day="martes" onclick="openModalWithHour('06:00 PM')"></td>
+            <td data-hour="06:00 PM" data-day="miercoles" onclick="openModalWithHour('06:00 PM')"></td>
+            <td data-hour="06:00 PM" data-day="jueves" onclick="openModalWithHour('06:00 PM')"></td>
+            <td data-hour="06:00 PM" data-day="viernes" onclick="openModalWithHour('06:00 PM')"></td>
+            <td data-hour="06:00 PM" data-day="sabado" onclick="openModalWithHour('06:00 PM')"></td>
+          </tr>
+          <tr>
+            <td>07:00 PM</td>
+            <td data-hour="07:00 PM" data-day="domingo" onclick="openModalWithHour('07:00 PM')"></td>
+            <td data-hour="07:00 PM" data-day="lunes" onclick="openModalWithHour('07:00 PM')"></td>
+            <td data-hour="07:00 PM" data-day="martes" onclick="openModalWithHour('07:00 PM')"></td>
+            <td data-hour="07:00 PM" data-day="miercoles" onclick="openModalWithHour('07:00 PM')"></td>
+            <td data-hour="07:00 PM" data-day="jueves" onclick="openModalWithHour('07:00 PM')"></td>
+            <td data-hour="07:00 PM" data-day="viernes" onclick="openModalWithHour('07:00 PM')"></td>
+            <td data-hour="07:00 PM" data-day="sabado" onclick="openModalWithHour('07:00 PM')"></td>
+          </tr>
+          <tr>
+            <td>08:00 PM</td>
+            <td data-hour="08:00 PM" data-day="domingo" onclick="openModalWithHour('08:00 PM')"></td>
+            <td data-hour="08:00 PM" data-day="lunes" onclick="openModalWithHour('08:00 PM')"></td>
+            <td data-hour="08:00 PM" data-day="martes" onclick="openModalWithHour('08:00 PM')"></td>
+            <td data-hour="08:00 PM" data-day="miercoles" onclick="openModalWithHour('08:00 PM')"></td>
+            <td data-hour="08:00 PM" data-day="jueves" onclick="openModalWithHour('08:00 PM')"></td>
+            <td data-hour="08:00 PM" data-day="viernes" onclick="openModalWithHour('08:00 PM')"></td>
+            <td data-hour="08:00 PM" data-day="sabado" onclick="openModalWithHour('08:00 PM')"></td>
+          </tr>
+          <tr>
+            <td>09:00 PM</td>
+            <td data-hour="09:00 PM" data-day="domingo" onclick="openModalWithHour('09:00 PM')"></td>
+            <td data-hour="09:00 PM" data-day="lunes" onclick="openModalWithHour('09:00 PM')"></td>
+            <td data-hour="09:00 PM" data-day="martes" onclick="openModalWithHour('09:00 PM')"></td>
+            <td data-hour="09:00 PM" data-day="miercoles" onclick="openModalWithHour('09:00 PM')"></td>
+            <td data-hour="09:00 PM" data-day="jueves" onclick="openModalWithHour('09:00 PM')"></td>
+            <td data-hour="09:00 PM" data-day="viernes" onclick="openModalWithHour('09:00 PM')"></td>
+            <td data-hour="09:00 PM" data-day="sabado" onclick="openModalWithHour('09:00 PM')"></td>
+          </tr>
+          <tr>
+            <td>10:00 PM</td>
+            <td data-hour="10:00 PM" data-day="domingo" onclick="openModalWithHour('10:00 PM')"></td>
+            <td data-hour="10:00 PM" data-day="lunes" onclick="openModalWithHour('10:00 PM')"></td>
+            <td data-hour="10:00 PM" data-day="martes" onclick="openModalWithHour('10:00 PM')"></td>
+            <td data-hour="10:00 PM" data-day="miercoles" onclick="openModalWithHour('10:00 PM')"></td>
+            <td data-hour="10:00 PM" data-day="jueves" onclick="openModalWithHour('10:00 PM')"></td>
+            <td data-hour="10:00 PM" data-day="viernes" onclick="openModalWithHour('10:00 PM')"></td>
+            <td data-hour="10:00 PM" data-day="sabado" onclick="openModalWithHour('10:00 PM')"></td>
+          </tr>
+          <tr>
+            <td>11:00 PM</td>
+            <td data-hour="11:00 PM" data-day="domingo" onclick="openModalWithHour('11:00 PM')"></td>
+            <td data-hour="11:00 PM" data-day="lunes" onclick="openModalWithHour('11:00 PM')"></td>
+            <td data-hour="11:00 PM" data-day="martes" onclick="openModalWithHour('11:00 PM')"></td>
+            <td data-hour="11:00 PM" data-day="miercoles" onclick="openModalWithHour('11:00 PM')"></td>
+            <td data-hour="11:00 PM" data-day="jueves" onclick="openModalWithHour('11:00 PM')"></td>
+            <td data-hour="11:00 PM" data-day="viernes" onclick="openModalWithHour('11:00 PM')"></td>
+            <td data-hour="11:00 PM" data-day="sabado" onclick="openModalWithHour('11:00 PM')"></td>
+          </tr>
+      </div>
+      
+      <!-- Modal añadir evento -->
+      <div id="event-modal" class="modal">
+        <div class="modal-content">
+          <span class="close" id="close-modal">&times;</span>
+          <h2>Añadir Evento</h2>
+          <form id="event-form">
+            <label for="event-title">Título:</label>
+            <input type="text" id="event-title" required>
+            <label for="event-location">Ubicación:</label>
+            <input type="text" id="event-location" required>
+            <label for="event-date">Fecha:</label>
+            <input type="date" id="event-date" required>
+            <label for="event-time">Hora:</label>
+            <input type="time" id="event-time" required>
+            <br>
+            <label for="event-category">Categoría:</label>
+            <select id="event-category" required>
+              <option value="Categoria1">Tarea</option>
+              <option value="Categoria2">Deporte</option>
+              <option value="Categoria3">Videollamada</option>
+            </select>
+            <br>
+            <label for="event-description">Descripción:</label>
+            <textarea id="event-description" required></textarea>
+            <input type="submit" value="Agregar Evento">
+          </form>
+        </div>
+      </div>
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+    </script>
+
+    <script src="modal_select_week.js"></script>
+    <script src="cells_modal_week.js"></script>
+    <script src="save_event.js"></script>
+
+    
+    
+
+</body>
+</html>
+

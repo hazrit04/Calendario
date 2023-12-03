@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en" id="html">
+<head>
+    <title>Login</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #FFFFFF 65%, #AFB3FF 35%);
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            height: 100vh;
+            position: relative;
+        }
+
+        .login-container {
+            position: relative;
+            padding: 20px;
+            width: 400px;
+            margin-left: 250px; 
+        }
+
+        .login-container h2 {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .form-group {
+            margin: 10px 0;
+        }
+
+        .form-group label {
+            display: block;
+            margin-left: 5px;
+            margin-bottom: 5px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #656ED3;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            color: black;
+        }
+
+        .login-button {
+            width: 105%;
+            padding: 10px;
+            background: #656ED3;
+            border: none;
+            color: #fff;
+            border-radius: 20px;
+            cursor: pointer;
+            margin-bottom: 40px;
+        }
+
+        .register-link {
+            text-align: center;
+        }
+        
+        .register-link a {
+            color: #656ED3;
+        }
+
+        .background-image {
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 10px;
+            width: 50%;
+        }
+
+        .rectangles {
+            position: absolute;
+            bottom: 0px;
+            left: 100px;
+            width: 250px;
+            height: 150px;
+            transform: translate(-50%, 50%) rotate(-45deg); /* Aplicar rotación de -45 grados */
+        }
+
+        /* Estilo para los rectángulos */
+        .rectangle {
+            width: 412px;
+            height: 150px;
+            bottom: 10px;
+            background: #656ED3;
+            border-radius: 75px;
+            position: absolute;
+        }
+
+        .rectangle-shadow {
+            width: 400px;
+            height: 150px;
+            background: #AFB3FF;
+            border-radius: 75px;
+            position: absolute;
+            top: 5px;
+            left: 5px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>Bienvenido!</h2>
+        <form id="loginForm" class="form-group" action="/login" method="POST">
+            <label for="username">Email:</label>
+            <input type="text" id="username" name="username" placeholder="Email">
+            
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="Password">
+        
+            <button class="login-button" type="submit">Login</button>
+        </form>
+        <p class="register-link">No tienes cuenta? <a href="registro.html">Registrate!</a></p>
+    </div>
+    <img class="background-image" src="https://tagfinity.tech/assets/home/laptophome.png" alt="Imagen de fondo">
+    <div class="rectangles">
+        <div class="rectangle"></div>
+        <div class="rectangle-shadow"></div>
+    </div>
+
+
+    <!--JavaScript-->
+    <script src="ajax_handler.js"></script>
+
+</body>
+</html>

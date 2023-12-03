@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calendario</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <style>
+
+    body {
+      font-family: "Roboto-Bold", Helvetica, Arial, sans-serif;
+      display: flex;
+      flex-direction: row;
+    }
+
+    #left-panel {
+      flex: 0.5;
+      padding: 20px;
+      border-right: 1px solid #ccc;
+      display: flex;
+      flex-direction: column;
+    }
+
+    #left-panel button {
+      color: #000000;
+      border: none;
+      border-radius: 15px;
+      padding: 8px 12px;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    #left-panel button:hover {
+      background-color: #AFB3FF;
+      color: #fff;
+    }
+
+    #right-panel {
+      flex: 2;
+      padding: 20px;
+    }
+
+    #right-panel button {
+      color: #000000;
+      border: none;
+      border-radius: 15px;
+      padding: 8px 12px;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    #left-panel select {
+      background-color: #fff;
+      color: #000;
+      border: 2px solid #ccc;
+      border-radius: 3px;
+      padding: 10px 15px;
+      font-size: 12px;
+      cursor: pointer;
+      width:100%;
+    }
+
+    #right-panel button:hover {
+      background-color: #AFB3FF;
+      color: #fff;
+    }
+
+    #right-panel select:hover {
+      border: 2px solid #656ed3;
+      color: #656ed3;
+    }
+
+    #month-navigation {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    #month-navigation button {
+      align-items: flex-end;
+      margin-left: 10px;
+    }
+
+    #calendar {
+      border: 1px solid #ccc;
+      padding: 20px;
+    }
+
+    #events {
+      margin-top: 20px;
+      color:lightseagreen;
+    }
+
+    #add-event-button {
+      float: left; 
+    }
+
+    
+    #profile-button {
+      float: right;
+      width: 100%;
+    }
+
+    #current-month-right {
+      font-size: 24px; 
+      font-weight: bold; 
+      font-family: "Roboto-Bold", Helvetica, Arial, sans-serif;
+    }
+
+    #left-panel span{
+      font-size: 24px; 
+      font-weight: bold; 
+      font-family: "Roboto-Bold", Helvetica, Arial, sans-serif;
+    }
+
+    #profile-button i {
+      color: #656ed3; 
+      font-size: 35px; 
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      border: 1px solid #DADCE0;
+      padding: 8px;
+      text-align: center;
+      vertical-align: top;
+    }
+
+    th {
+      font-family: "Roboto-Bold", Helvetica, Arial, sans-serif;
+      background-color: #fff;
+    }
+
+    td {
+      background-color: #ffffff;
+      font-size: 10px;
+      padding-top: 130px;
+    }
+
+    #mini-calendar {
+      border: 1px solid #fff;
+      padding: 20px;
+    }
+
+    
+    #mini-calendar table {
+      width: 100%;
+    }
+
+    #mini-calendar th, #mini-calendar td {
+      width: 14.28%; 
+      border: 1px solid #DADCE0;
+      padding: 15px;
+      text-align: center;
+    }
+
+
+    #videollamada {
+      display: block;
+      font-size: 12px;
+      font-weight: bold;
+      background-color: #FF5733; 
+      color: white; 
+      text-align: center;
+      border-radius: 7px;
+    }
+
+    #deporte{
+      display: block;
+      font-size: 12px;
+      font-weight: bold;
+      background-color: purple; 
+      color: white; 
+      text-align: center;
+      border-radius: 7px;
+    }
+
+    #tarea{
+      display: block;
+      font-size: 12px;
+      font-weight: bold;
+      background-color: #5733FF; 
+      color: white; 
+      text-align: center;
+      border-radius: 7px;
+    }
+
+    .dropdown {
+      position: relative;
+      display: inline-block;
+      width: 100%;
+    }
+
+    .dropbtn {
+      color: #656ed3;
+      border: none;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #fff;
+      min-width: 160px;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      z-index: 1;
+      width: 100%;
+    }
+
+    .dropdown-content a {
+      display: block;
+      padding: 10px;
+      text-decoration: none;
+      font-size: 15px;
+      color: #000;
+      width: 100%;
+    }
+
+    .dropdown-content a:hover {
+      background-color: #AFB3FF;
+      color: #fff;
+      width: 100%;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+      width: 100%;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      overflow: auto;
+    }
+
+    .modal-content {
+      background-color: #fff;
+      width: 30%;
+      margin: 10% auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 15px;
+      align-items: center;
+      
+    }
+
+    label {
+      margin-bottom: 10px;
+      font-weight: bold;
+      font-family: "Roboto-Bold", Helvetica, Arial, sans-serif;
+    }
+
+    input, textarea {
+      margin-bottom: 20px;
+      width: 100%;
+      margin: 10px 0;
+      border: 1px solid #848484;
+      border-radius: 25px;
+      height: 2em;
+    }
+
+    h2{
+      color: #656ed3
+    }
+
+    #event-date, #event-time {
+      margin-bottom: 20px;
+      width: 30%;
+      margin: 10px 0;
+      border: 1px solid #848484;
+      border-radius: 25px;
+    }
+
+    #event-category {
+      margin-bottom: 20px;
+      width: 35%;
+      margin: 10px 0;
+      border: 1px solid #848484;
+      border-radius: 25px;
+    }
+
+    input[type="submit"] {
+      margin-top: 20px;
+      background-color: #ffffff;
+      color: #656ed3;
+      border: 1px solid #656ed3;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+    }
+
+    input[type="submit"]:hover {
+      background-color: #656ed3;
+      color: white;
+      border: 1px solid #656ed3;
+    }
+
+    form {
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-gap: 20px; 
+    }
+
+    .close {
+      float: right;
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    
+
+  </style>
+</head>
+<body>
+  <div id="left-panel">
+    <div id="month">
+      <span id="current-month-left">Noviembre 2023</span>
+      <button id="prev-month-left"><</button>
+      <button id="next-month-left">></button>
+    </div>
+    <div id="mini-calendar">
+      <table>
+        <thead>
+          <tr>
+            <th>D</th>
+            <th>L</th>
+            <th>M</th>
+            <th>X</th>
+            <th>J</th>
+            <th>V</th>
+            <th>S</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>1</td>
+            <td>2</td>
+            <td>3</td>
+            <td>4</td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td>6</td>
+            <td>7</td>
+            <td>8</td>
+            <td>8</td>
+            <td>10</td>
+            <td>11</td>
+          </tr>
+          <tr>
+            <td>12</td>
+            <td>13</td>
+            <td>14</td>
+            <td>15</td>
+            <td>16</td>
+            <td>17</td>
+            <td>18</td>
+          </tr>
+          <tr>
+            <td>19</td>
+            <td>20</td>
+            <td>21</td>
+            <td>22</td>
+            <td>23</td>
+            <td>24</td>
+            <td>25</td>
+          </tr>
+          <tr>
+            <td>26</td>
+            <td>27</td>
+            <td>28</td>
+            <td>29</td>
+            <td>30</td>
+            <td></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <select id="month-select" onchange="redirectToPage()">
+      <option value="Mes">Mes</option>
+      <option value="Semana">Semana</option>
+    </select>
+    <br>
+    <button id="add-event-button" onclick="openModal()">Añadir Evento</button>
+    <br>
+    <div class="dropdown">
+      <button class="dropbtn">Perfil</button>
+      <div class="dropdown-content">
+        <a href="perfil.html">Mi Perfil</a>
+        <a href="login.html">Cerrar Sesion</a>
+      </div>
+    </div>
+  </div>
+  <div id="right-panel">
+    <div id="navbar">
+      <div id="current-month-right">
+        <span id="current-month-name">Noviembre 2023</span>
+        <button id="prev-month-right" ><</button>  
+        <button id="next-month-right" >></button>
+      </div>
+    </div>
+    <div id="calendar">
+      <table>
+        <thead>
+          <tr>
+            <th>Domingo</th>
+            <th>Lunes</th>
+            <th>Martes</th>
+            <th>Miércoles</th>
+            <th>Jueves</th>
+            <th>Viernes</th>
+            <th>Sábado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="calendar-cell"></td>
+            <td class="calendar-cell"></td>
+            <td class="calendar-cell"></td>
+            <td class="calendar-cell" data-day="1">1</td>
+            <td class="calendar-cell" data-day="2">2</td>
+            <td class="calendar-cell" data-day="3">3</td>
+            <td class="calendar-cell" data-day="4">4</td>
+          </tr>
+          <tr>
+            <td class="calendar-cell" data-day="5">5</td>
+            <td class="calendar-cell" data-day="6">6</td>
+            <td class="calendar-cell" data-day="7">7</td>
+            <td class="calendar-cell" data-day="8">8</td>
+            <td class="calendar-cell" data-day="9">8</td>
+            <td class="calendar-cell" data-day="10">10</td>
+            <td class="calendar-cell" data-day="11">11</td>
+          </tr>
+          <tr>
+            <td class="calendar-cell" data-day="12">12</td>
+            <td class="calendar-cell" data-day="13">13</td>
+            <td class="calendar-cell" data-day="14">14</td>
+            <td class="calendar-cell" data-day="15">15</td>
+            <td class="calendar-cell" data-day="16">16</td>
+            <td class="calendar-cell" data-day="17">17</td>
+            <td class="calendar-cell" data-day="18">18</td>
+          </tr>
+          <tr>
+            <td class="calendar-cell" data-day="19">19</td>
+            <td class="calendar-cell" data-day="20">20</td>
+            <td class="calendar-cell" data-day="21">21</td>
+            <td class="calendar-cell" data-day="22">22</td>
+            <td class="calendar-cell" data-day="23">23</td>
+            <td class="calendar-cell" data-day="24">24</td>
+            <td class="calendar-cell" data-day="25">25</td>
+          </tr>
+          <tr>
+            <td class="calendar-cell" data-day="26">26</td>
+            <td class="calendar-cell" data-day="27">27</td>
+            <td class="calendar-cell" data-day="28">28</td>
+            <td class="calendar-cell" data-day="29">29</td>
+            <td class="calendar-cell" data-day="30">30</td>
+            <td class="calendar-cell"></td>
+            <td class="calendar-cell"></td>
+          </tr>
+      </div>
+    </div>
+  </div>
+
+      <!-- Modal añadir evento -->
+      <div id="event-modal" class="modal">
+        <div class="modal-content">
+          <span class="close" id="close-modal">&times;</span>
+          <h2>Añadir Evento</h2>
+          <form id="event-form" action="/saveEvent" method="post">
+            <label for="event-title">Título:</label>
+            <input type="text" id="event-title" name="title" required>
+            <label for="event-location">Ubicación:</label>
+            <input type="text" id="event-location" name="location">
+            <label for="event-date">Fecha:</label>
+            <input type="date" id="event-date" name="date" required>
+            <label for="event-time">Hora:</label>
+            <input type="time" id="event-time" name="time" required>
+            <br>
+            <label for="event-category">Categoría:</label>
+            <select id="event-category" name="category">
+              <option value="Categoria1">Tarea</option>
+              <option value="Categoria2">Deporte</option>
+              <option value="Categoria3">Videollamada</option>
+            </select>
+            <br>
+            <label for="event-description">Descripción:</label>
+            <textarea id="event-description" name="description"></textarea>
+            <input type="submit" value="Agregar Evento" type="button">
+          </form>
+        </div>
+      </div>
+
+      <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+    </script>
+    
+    <script src="modal_select_month.js"></script>
+    <script src="cambio_mes.js"></script>
+    <script src="ajax_handler.js"></script>
+
+</body>
+</html>
+
