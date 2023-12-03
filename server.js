@@ -83,7 +83,7 @@ app.use((err, req, res, next) => {
   });
   
   // Conectar a la base de datos y luego iniciar el servidor
-mongoose.connect('mongodb://127.0.0.1:27017/UsersDB', { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect('mongodb+srv://Seokjinnie:120304249203@cluster0.gaml5pm.mongodb.net/?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true })
         .then(() => {
         console.log('Conexión exitosa a la base de datos');
         app.listen(port, () => {
