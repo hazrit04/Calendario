@@ -8,13 +8,45 @@ const EventModel = require('./eventInit');
 const cors = require('cors');
 
 const app = express();
-const port = 3000
+const port = 3000;
 app.use(cors());
 
 app.use(
     express.urlencoded({ extended: true })
 );
 app.use(express.json());
+
+const path = require('path');
+
+app.get('/', (req, res) => {
+    const filePath = path.join(__dirname, 'login.html');
+    res.sendFile(filePath);
+});
+
+app.get('/registros', (req, res) => {
+    const filePath = path.join(__dirname, 'registros.html');
+    res.sendFile(filePath);
+});
+
+app.get('/calendar_month', (req, res) => {
+    const filePath = path.join(__dirname, 'calendar_month.html');
+    res.sendFile(filePath);
+});
+
+app.get('/calendar_week', (req, res) => {
+    const filePath = path.join(__dirname, 'calendar_week.html');
+    res.sendFile(filePath);
+});
+
+app.get('/perfil', (req, res) => {
+    const filePath = path.join(__dirname, 'perfil.html');
+    res.sendFile(filePath);
+});
+
+app.get('/login', (req, res) => {
+    const filePath = path.join(__dirname, 'login.html');
+    res.sendFile(filePath);
+});
 
 const registro = express.Router();
 app.use('/registro', registro);
